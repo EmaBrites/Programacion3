@@ -20,9 +20,9 @@ public class Greedy {
     private Procesador obtenerProcesadorOptimo(Tarea tarea) {
         int mejorTiempo = Integer.MAX_VALUE;
         Procesador pOptimo = null;
-        for (Procesador procesador: this.procesadores) {
+        for (Procesador procesador : this.procesadores) {
             this.estadosGenerados++;
-            if(procesador.puedeAgregarTarea(tarea) && procesador.getTiempoEjecucion() < mejorTiempo){
+            if (procesador.puedeAgregarTarea(tarea) && procesador.getTiempoEjecucion() < mejorTiempo) {
                 pOptimo = procesador;
                 mejorTiempo = procesador.getTiempoEjecucion();
             }
@@ -31,13 +31,15 @@ public class Greedy {
     }
 
     public Solucion ejecutarGreedy() {
-        while ( !this.tareas.isEmpty()) {
+        while (!this.tareas.isEmpty()) {
             Tarea tareaAsignar = this.tareas.get(0);
             Procesador procesador = this.obtenerProcesadorOptimo(tareaAsignar);
             if (procesador != null) {
-                this.resulTiempoFinalEjecucion += tareaAsignar.getTiempoEjecucion();
                 procesador.addTarea(tareaAsignar);
                 this.tareas.remove(tareaAsignar);
+                if(resulTiempoFinalEjecucion < procesador.getTiempoEjecucion()){
+                    resulTiempoFinalEjecucion = procesador.getTiempoEjecucion();
+                }
             } else {
                 return null;
             }
