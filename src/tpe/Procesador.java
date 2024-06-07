@@ -47,10 +47,7 @@ public class Procesador {
     }
 
     public boolean puedeAgregarTarea(Tarea t) {
-        if( (!t.getEsCritica() || this.hayCupoParaTareaCritica()) && this.tieneTiempo(t.getTiempoEjecucion() )){
-          return true;
-        }
-        return false;
+        return (!t.getEsCritica() || this.hayCupoParaTareaCritica()) && this.tieneTiempo(t.getTiempoEjecucion());
     }
 
     public void addTarea(Tarea t){
@@ -68,15 +65,12 @@ public class Procesador {
 
     public void removeTarea (Tarea tarea){
         this.tareasAsignadas.remove(tarea);
+        this.tiempoEjecucion -= tarea.getTiempoEjecucion();
     }
 
     public boolean hayCupoParaTareaCritica(){
-        List<Tarea> cupo = this.tareasAsignadas.stream().filter(tarea -> tarea.getEsCritica()).collect(Collectors.toList());
-        if(cupo.size() < MAXTAREASCRITICAS){
-            return true;
-        }else{
-            return false;
-        }
+        List<Tarea> cupo = this.tareasAsignadas.stream().filter(Tarea::getEsCritica).collect(Collectors.toList());
+        return cupo.size() <= MAXTAREASCRITICAS;
     }
 
     public void reiniciar(){

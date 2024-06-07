@@ -88,10 +88,10 @@ public class Servicios {
 		}
 	}
 
-	public void asginarTareasConBacktracking(Integer maxTiempoNoRefrigerados){
+	public Solucion asginarTareasConBacktracking(Integer maxTiempoNoRefrigerados){
 		this.procesadores.stream().filter(p -> !p.getRefrigerado()).collect(Collectors.toList()).forEach(p -> p.setTiempoMaximo(maxTiempoNoRefrigerados));
 		Backtracking backtracking = new Backtracking(tareasAsignar,this.procesadores);
-		backtracking.iniciarBacktracking();
+		return backtracking.iniciarBacktracking();
 	}
 
 	public void printProcesadores(){
