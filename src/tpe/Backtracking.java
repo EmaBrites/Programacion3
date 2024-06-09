@@ -19,6 +19,9 @@ public class Backtracking {
         this.procesadoresListos = new ArrayList<>();
     }
 
+    /*
+     * La complejidad temporal del backtracking seria O(n^m) donde n son las tareas y m los procesadores.
+     */
 
     public Solucion iniciarBacktracking() {
         this.resulTiempoFinalEjecucion = Integer.MAX_VALUE;
@@ -26,6 +29,14 @@ public class Backtracking {
         this.ejecutarBacktracking(mejorTiempoActual, new ArrayList<>(), this.procesadores);
         return new Solucion(this.procesadoresListos, this.resulTiempoFinalEjecucion, this.estadosGenerados);
     }
+
+    /*
+    Lo primero es verificar la condicion de corte que seria haber asignado todas las tareas para luego calcular
+    el mejor tiempo actual y una vez calculado comparamos con lo que tenemos como posible resultado y elegimos
+    el de menos tiempo.
+    Sino se asignaron todas las tareas seguimos probando posibles soluciones con backtracking y podando casos en los que
+    no se llegarian a una mejor solucion de la ya encontrada.
+     */
 
     private void ejecutarBacktracking(Integer mejorTiempoActual, List<Tarea> tareasAsignadas, List<Procesador> procesadores) {
         this.estadosGenerados++;
