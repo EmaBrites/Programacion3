@@ -15,17 +15,6 @@ public class Procesador {
     private List<Tarea> tareasAsignadas;
     private static Integer MAXTAREASCRITICAS = 2;
 
-    @Override
-    public String toString() {
-        return "Procesador{" +
-                "id='" + id + '\'' +
-                ", esta refrigerado='" + refrigerado + '\'' +
-                ", codigoProcesador='" + codigoProcesador + '\'' +
-                ", tiempo ejecucion='" + tiempoEjecucion + '\'' +
-                ", tareasAsignadas=\n" + tareasAsignadas.toString() +
-                "}\n";
-    }
-
     public Procesador(String id, String codigoProcesador, Integer anioFuncionamiento, Boolean refrigerado) {
         this.id = id;
         this.codigoProcesador = codigoProcesador;
@@ -90,6 +79,17 @@ public class Procesador {
         if (o == null || getClass() != o.getClass()) return false;
         Procesador that = (Procesador) o;
         return id.equals(that.id);
+    }
+
+    @Override
+    public String toString() {
+        return "Procesador{" +
+                "id='" + id + '\'' +
+                ", esta refrigerado='" + refrigerado + '\'' +
+                ", codigoProcesador='" + codigoProcesador + '\'' +
+                ", tiempo ejecucion='" + tiempoEjecucion + '\'' +
+                ", tareasAsignadas=\n" + tareasAsignadas.toString() +
+                "}\n";
     }
 
     public String getId() {
