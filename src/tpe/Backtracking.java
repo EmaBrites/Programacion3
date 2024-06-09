@@ -40,12 +40,14 @@ public class Backtracking {
 
     private void ejecutarBacktracking(Integer mejorTiempoActual, List<Tarea> tareasAsignadas, List<Procesador> procesadores) {
         this.estadosGenerados++;
+
         if (tareasAsignadas.size() == this.tareas.size()) {
             for (Procesador procesador : procesadores) {
                 int tiempoProcesador = procesador.getTiempoEjecucion();
                 mejorTiempoActual = Math.max(mejorTiempoActual, tiempoProcesador);
             }
             if (mejorTiempoActual < this.resulTiempoFinalEjecucion) {
+                this.procesadoresListos.clear();
                 this.resulTiempoFinalEjecucion = mejorTiempoActual;
                 for (Procesador procesador : procesadores) {
                     this.procesadoresListos.add(new Procesador(procesador.getId(), procesador.getCodigoProcesador(), procesador.getAnioFuncionamiento(), procesador.getRefrigerado(), procesador.getTiempoEjecucion(), procesador.getTiempoMaximo(), procesador.getTareasAsignadas()));
@@ -56,32 +58,21 @@ public class Backtracking {
                 return;
             }
             for (Tarea tActual : this.tareas) {
-                    Procesador procesador = this.obtenerProcesadorOptimo(tActual);
+                for (Procesador pActual : procesadores) {
                     if (!tareasAsignadas.contains(tActual)) {
-                        if (procesador != null && procesador.puedeAgregarTarea(tActual)) {
-                            procesador.addTarea(tActual);
+                        if (pActual.puedeAgregarTarea(tActual)) {
+                            pActual.addTarea(tActual);
                             tareasAsignadas.add(tActual);
                             if (mejorTiempoActual < this.resulTiempoFinalEjecucion) {
                                 ejecutarBacktracking(mejorTiempoActual, tareasAsignadas, procesadores);
                             }
                             tareasAsignadas.remove(tActual);
-                            procesador.removeTarea(tActual);
+                            pActual.removeTarea(tActual);
                         }
+                    }
                 }
             }
         }
-    }
-
-    private Procesador obtenerProcesadorOptimo(Tarea tarea) {
-        int mejorTiempo = Integer.MAX_VALUE;
-        Procesador pOptimo = null;
-        for (Procesador procesador : this.procesadores) {
-            if (procesador.puedeAgregarTarea(tarea) && procesador.getTiempoEjecucion() < mejorTiempo) {
-                pOptimo = procesador;
-                mejorTiempo = procesador.getTiempoEjecucion();
-            }
-        }
-        return pOptimo;
     }
 }
 

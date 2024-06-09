@@ -57,6 +57,7 @@ public class Procesador {
 
     public void removeTarea (Tarea tarea){
         this.tareasAsignadas.remove(tarea);
+        this.tiempoEjecucion -= tarea.getTiempoEjecucion();
     }
 
     public boolean hayCupoParaTareaCritica(){
