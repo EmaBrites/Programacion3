@@ -27,6 +27,9 @@ public class Backtracking {
         this.resulTiempoFinalEjecucion = Integer.MAX_VALUE;
         Integer mejorTiempoActual = Integer.MIN_VALUE;
         this.ejecutarBacktracking(mejorTiempoActual, new ArrayList<>(), this.procesadores);
+        if (this.procesadoresListos.isEmpty()) {
+            throw new RuntimeException("No existe solucion posible.");
+        }
         return new Solucion(this.procesadoresListos, this.resulTiempoFinalEjecucion, this.estadosGenerados);
     }
 
