@@ -17,6 +17,10 @@ public class Greedy {
         this.resulTiempoFinalEjecucion = 0;
     }
 
+    /*
+    Este metodo es nuestro criterio para seleccionar la mejor opcion posible, en este caso el procesador
+     con menos tiempo de ejecucion actual es la mejor opcion para asignar una tarea
+     */
     private Procesador obtenerProcesadorOptimo(Tarea tarea) {
         int mejorTiempo = Integer.MAX_VALUE;
         Procesador pOptimo = null;
@@ -37,11 +41,11 @@ public class Greedy {
             if (procesador != null) {
                 procesador.addTarea(tareaAsignar);
                 this.tareas.remove(tareaAsignar);
-                if(resulTiempoFinalEjecucion < procesador.getTiempoEjecucion()){
+                if (resulTiempoFinalEjecucion < procesador.getTiempoEjecucion()) {
                     resulTiempoFinalEjecucion = procesador.getTiempoEjecucion();
                 }
             } else {
-                return null;
+                throw new RuntimeException("No se encontro una solucion.");
             }
         }
         return new Solucion(this.procesadores, this.resulTiempoFinalEjecucion, this.estadosGenerados);
