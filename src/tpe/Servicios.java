@@ -88,10 +88,12 @@ public class Servicios {
 		}
 	}
 
-	public void asginarTareasConBacktracking(Integer maxTiempoNoRefrigerados){
+	public Solucion asginarTareasConBacktracking(Integer maxTiempoNoRefrigerados){
 		this.procesadores.stream().filter(p -> !p.getRefrigerado()).collect(Collectors.toList()).forEach(p -> p.setTiempoMaximo(maxTiempoNoRefrigerados));
+		tareasAsignar.sort(comparadorPrioridad);
+		System.out.println(tareasAsignar);
 		Backtracking backtracking = new Backtracking(tareasAsignar,this.procesadores);
-		backtracking.iniciarBacktracking();
+		return  backtracking.iniciarBacktracking();
 	}
 
 	public void printProcesadores(){
@@ -103,8 +105,6 @@ public class Servicios {
 			p.reiniciar();
 		}
 	}
-
-
 
 	public Solucion asignarTareasConGreedy(Integer maxTiempoNoRefrigerados){
 		this.procesadores.stream().filter(p -> !p.getRefrigerado()).collect(Collectors.toList()).forEach(p -> p.setTiempoMaximo(maxTiempoNoRefrigerados));
@@ -118,13 +118,13 @@ public class Servicios {
 	Comparator<Tarea> comparadorPrioridad = new Comparator<Tarea>() {
 		@Override
 		public int compare(Tarea tarea1, Tarea tarea2) {
-			// Si las tareas son críticas, poner la crítica primero
+			// Si las tareas son críticas, pone la crítica primero
 			if (tarea1.getEsCritica() && !tarea2.getEsCritica()) {
 				return -1;
 			} else if (!tarea1.getEsCritica() && tarea2.getEsCritica()) {
 				return 1;
 			}
-			// Si ambas tareas son críticas o no críticas, ordenar por prioridad de menor a mayor
+			// Si ambas tareas son críticas o no críticas, ordena por prioridad de menor a mayor
 			return Integer.compare(tarea1.getNivelPrioridad(),tarea2.getNivelPrioridad());
 		}
 	};
