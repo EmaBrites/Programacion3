@@ -26,7 +26,7 @@ public class Backtracking {
     public Solucion iniciarBacktracking() {
         this.resulTiempoFinalEjecucion = Integer.MAX_VALUE;
         Integer mejorTiempoActual = Integer.MIN_VALUE;
-        this.ejecutarBacktracking(mejorTiempoActual, new ArrayList<>(), this.procesadores);
+        this.ejecutarBacktracking(mejorTiempoActual, new ArrayList<>(tareas), this.procesadores);
         if (this.procesadoresListos.isEmpty()) {
             throw new RuntimeException("No existe solucion posible.");
         }
@@ -41,10 +41,10 @@ public class Backtracking {
     no se llegarian a una mejor solucion de la ya encontrada.
      */
 
-    private void ejecutarBacktracking(Integer mejorTiempoActual, List<Tarea> tareasAsignadas, List<Procesador> procesadores) {
+    private void ejecutarBacktracking(Integer mejorTiempoActual, List<Tarea> tareasPorAsignar, List<Procesador> procesadores) {
         this.estadosGenerados++;
 
-        if (tareasAsignadas.size() == this.tareas.size()) {
+        if (tareasPorAsignar.isEmpty()) {
             for (Procesador procesador : procesadores) {
                 int tiempoProcesador = procesador.getTiempoEjecucion();
                 mejorTiempoActual = Math.max(mejorTiempoActual, tiempoProcesador);
@@ -60,20 +60,16 @@ public class Backtracking {
             if (mejorTiempoActual >= this.resulTiempoFinalEjecucion) {
                 return;
             }
-            for (Tarea tActual : this.tareas) {
-                for (Procesador pActual : procesadores) {
-                    if (!tareasAsignadas.contains(tActual)) {
-                        if (pActual.puedeAgregarTarea(tActual)) {
-                            pActual.addTarea(tActual);
-                            tareasAsignadas.add(tActual);
-                            if (mejorTiempoActual < this.resulTiempoFinalEjecucion) {
-                                ejecutarBacktracking(mejorTiempoActual, tareasAsignadas, procesadores);
-                            }
-                            tareasAsignadas.remove(tActual);
-                            pActual.removeTarea(tActual);
-                        }
+            for (Procesador pActual : procesadores) {
+                Tarea tActual = tareasPorAsignar.remove(0);
+                if (pActual.puedeAgregarTarea(tActual)) {
+                    pActual.addTarea(tActual);
+                    if (mejorTiempoActual < this.resulTiempoFinalEjecucion) {
+                        ejecutarBacktracking(mejorTiempoActual, tareasPorAsignar, procesadores);
                     }
+                    pActual.removeTarea(tActual);
                 }
+                tareasPorAsignar.add(0, tActual);
             }
         }
     }
