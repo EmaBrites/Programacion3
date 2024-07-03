@@ -65,7 +65,7 @@ public class Greedy {
                     resulTiempoFinalEjecucion = procesador.getTiempoEjecucion();
                 }
             } else {
-                throw new RuntimeException("No se encontro una solucion.");
+                return null;
             }
         }
         return new Solucion(this.procesadores, this.resulTiempoFinalEjecucion, this.estadosGenerados);
