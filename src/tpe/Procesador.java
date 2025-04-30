@@ -2,7 +2,6 @@ package ProgramacionIII.tpe;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Procesador {
 
@@ -13,18 +12,8 @@ public class Procesador {
     private Integer tiempoEjecucion;
     private Integer tiempoMaximo;
     private List<Tarea> tareasAsignadas;
-    private static Integer MAXTAREASCRITICAS = 2;
-
-    @Override
-    public String toString() {
-        return "Procesador{" +
-                "id='" + id + '\'' +
-                ", esta refrigerado='" + refrigerado + '\'' +
-                ", codigoProcesador='" + codigoProcesador + '\'' +
-                ", tiempo ejecucion='" + tiempoEjecucion + '\'' +
-                ", tareasAsignadas=\n" + tareasAsignadas.toString() +
-                "}\n";
-    }
+    private static final Integer MAXTAREASCRITICAS = 2;
+    private int cantidadTareasCriticas;
 
     public Procesador(String id, String codigoProcesador, Integer anioFuncionamiento, Boolean refrigerado) {
         this.id = id;
@@ -34,6 +23,7 @@ public class Procesador {
         this.tiempoEjecucion = 0;
         this.tiempoMaximo = -1;
         this.tareasAsignadas = new ArrayList<>();
+        cantidadTareasCriticas = 0;
     }
 
     public Procesador(String id, String codigoProcesador, Integer anioFuncionamiento, Boolean refrigerado, Integer tiempoEjecucion, Integer tiempoMaximo, List<Tarea> tareasAsignadas) {
@@ -47,15 +37,15 @@ public class Procesador {
     }
 
     public boolean puedeAgregarTarea(Tarea t) {
-        if( (!t.getEsCritica() || this.hayCupoParaTareaCritica()) && this.tieneTiempo(t.getTiempoEjecucion() )){
-          return true;
-        }
-        return false;
+        return (!t.getEsCritica() || this.hayCupoParaTareaCritica()) && this.tieneTiempo(t.getTiempoEjecucion());
     }
 
     public void addTarea(Tarea t){
         this.tareasAsignadas.add(t);
         this.tiempoEjecucion += t.getTiempoEjecucion();
+        if (t.getEsCritica()){
+            this.cantidadTareasCriticas++;
+        }
     }
 
     public boolean tieneTiempo(Integer tiempoTarea){
@@ -68,15 +58,14 @@ public class Procesador {
 
     public void removeTarea (Tarea tarea){
         this.tareasAsignadas.remove(tarea);
+        this.tiempoEjecucion -= tarea.getTiempoEjecucion();
+        if (tarea.getEsCritica()){
+            this.cantidadTareasCriticas--;
+        }
     }
 
     public boolean hayCupoParaTareaCritica(){
-        List<Tarea> cupo = this.tareasAsignadas.stream().filter(tarea -> tarea.getEsCritica()).collect(Collectors.toList());
-        if(cupo.size() < MAXTAREASCRITICAS){
-            return true;
-        }else{
-            return false;
-        }
+        return cantidadTareasCriticas < MAXTAREASCRITICAS;
     }
 
     public void reiniciar(){
@@ -90,6 +79,17 @@ public class Procesador {
         if (o == null || getClass() != o.getClass()) return false;
         Procesador that = (Procesador) o;
         return id.equals(that.id);
+    }
+
+    @Override
+    public String toString() {
+        return "Procesador{" +
+                "id='" + id + '\'' +
+                ", esta refrigerado='" + refrigerado + '\'' +
+                ", codigoProcesador='" + codigoProcesador + '\'' +
+                ", tiempo ejecucion='" + tiempoEjecucion + '\'' +
+                ", tareasAsignadas=\n" + tareasAsignadas.toString() +
+                "}\n";
     }
 
     public String getId() {

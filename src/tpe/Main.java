@@ -6,9 +6,10 @@ public class Main {
 
 	public static void main(String args[]) {
 		Servicios servicios = new Servicios("src/tpe/datasets/Procesadores.csv", "src/tpe/datasets/Tareas.csv");
-		servicios.asginarTareasConBacktracking(50);
+		Solucion solucionBacktracking =	servicios.asginarTareasConBacktracking(50);
 		servicios.reiniciarProcesadores();
+		System.out.println("Solucion con backtracking: \n" + solucionBacktracking);
 		Solucion solucionGreedy = servicios.asignarTareasConGreedy(50);
-		System.out.println(solucionGreedy);
+		System.out.println("Solucion con greedy:\n" + solucionGreedy);
 	}
 }

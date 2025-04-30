@@ -30,6 +30,6 @@ public class Solucion {
     public String toString() {
         return "Solucion obtenida: " + procesadores + "\n" +
                 "Tiempo maximo: " + tiempoMaximo + "\n" +
-                "CantEstaddos: " + cantEstaddos + "\n";
+                "Cantidad estados: " + cantEstaddos + "\n";
     }
 }
